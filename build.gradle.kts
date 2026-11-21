@@ -32,7 +32,7 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
     implementation("org.apache.logging.log4j:log4j-core:2.21.1")
-    implementation("com.google.guava:guava:22.0")
+    implementation("com.google.guava:guava:33.7.2-jre")
     implementation("org.apache.commons:commons-math3:3.4.1")
     implementation("commons-codec:commons-codec:1.10")
     implementation("org.biojava:biojava-core:6.0.4")
