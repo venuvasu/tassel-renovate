@@ -91,7 +91,22 @@ tasks {
     }
 
     test {
-        jvmArgs = listOf<String>("-Xmx10g")
+        val testJvmArgs = mutableListOf<String>("-Xmx10g")
+        // Graviton (ARM64) JDK 21 tuning
+        if (System.getProperty("os.arch") == "aarch64") {
+            testJvmArgs += listOf(
+                "-XX:-TieredCompilation",
+                "-XX:ReservedCodeCacheSize=64M",
+                "-XX:InitialCodeCacheSize=64M",
+                "-Xss1m"
+            )
+        }
+        // cisd:jhdf5 19.04.1 ships no aarch64-Linux libjhdf5.so; allow pointing to a locally built one
+        val jhdf5NativeLib = (findProperty("jhdf5NativeLibPath") as String?) ?: System.getenv("JHDF5_NATIVE_LIBPATH")
+        if (!jhdf5NativeLib.isNullOrBlank()) {
+            testJvmArgs += "-Dnative.libpath.jhdf5=$jhdf5NativeLib"
+        }
+        jvmArgs = testJvmArgs
         ignoreFailures = true
         exclude(
             "**/analysis/gobii/*Test.class",
