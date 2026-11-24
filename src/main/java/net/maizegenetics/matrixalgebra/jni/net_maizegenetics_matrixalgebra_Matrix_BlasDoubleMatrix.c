@@ -10,7 +10,12 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#ifdef __APPLE__
 #include <vecLib/cblas.h>
+#else
+/* Linux (x86_64 and aarch64/Graviton): CBLAS header from OpenBLAS or netlib CBLAS */
+#include <cblas.h>
+#endif
 #include <limits.h>
 #include "net_maizegenetics_matrixalgebra_Matrix_BlasDoubleMatrix.h"
 
